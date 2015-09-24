@@ -1,0 +1,50 @@
+0.Introduction
+QuicK-mer is an efficient, paralog-sensitive CNV estimation pipeline based around Jellyfish-2. It counts the occurrences of each predefined k-mer inside Illumina sequencing data and normalizes to correct copy number based on pre-defined control regions. QuicK-mer supports both FASTQ and BAM format as input.
+
+1.Prerequisites
+Before using the QuicK-mer CNV pipeline, here is a list of programs required:
+1)	Jellyfish 2
+2)	Python 2.7
+3)	matplotlib 1.1.0 or later
+4)	samtools (only necessary if input file is in BAM format)
+
+2.Download QuicK-mer
+QuicK-mer is distributed as a source package on github. Grab QuicK-mer using the following command:
+
+git clone http://github.com/jackshencn/QuicK-mer
+
+3.Compile
+There are 3 required executables written in a compiled language to increase pipeline efficiency. Pre-compiled binaries are included in the distribution. If an OS/CPU not supported by the existing distributed binary is used, the programs should be compiled by the user.
+1)	KmerCor
+This is the core program for GC bias estimation and depth normalization in QuicK-mer. To compile use the below command:
+
+cd kmer/
+fpc -O KmerCor.lpr
+
+2)	kmer2window
+This program is used to convert depth data into copy number in a bedGraph format based on predefined window sizes and control regions. Each window contains a fixed number of k-mers. Note that the last window at the end of each chromosome may contain fewer. 
+
+cd kmer/
+g++ -O -o kmer2window kmer2window.cpp
+
+3)	CorDepthCombine
+The CorDepthCombine program is used to merge each GC-corrected sequencing library (or sequencing lane) from the same sample together. Each sequencing library (or lane) usually contains distinctive GC bias patterns and should be run through QuicK-mer separately.
+
+cd kmer/
+fpc -O CorDepthCombine.lpr
+
+5.Installation
+QuicK-mer does not need to be installed, all you need to do is add the application folders to your path directory. 
+
+QuicK-mer/
+QuicK-mer/kmer/
+
+To do so in unix-like systems, open your .bashrc file in the home directory using a text editor or with vi. Add the following line: 
+
+PATH=$PATH: path_before_Quick-mer/QuicK-mer/:path_before_Quick-mer /QuicK-mer/kmer/
+Then execute using:
+ source .bashrc.
+
+6. Running QuicK-mer
+start_kmer_pipeline.py inputfile\*.fastq.gz –o output_prefix genome-kmer/
+

@@ -80,6 +80,6 @@ else:
     print cmd
     subprocess.call(cmd, shell=True)
 
-#subprocess.call('rm '+output+'.jf',shell=True)
+subprocess.call('rm '+output+'.jf',shell=True)
 print time.strftime("%H:%M:%S")
 print 'KMER Pipeline finished'

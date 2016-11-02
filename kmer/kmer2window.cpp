@@ -20,7 +20,7 @@
 
 struct chrloc
 {
-    unsigned char chr_idx;
+    unsigned int chr_idx;
     unsigned int chr_begin;
     unsigned int chr_end;
     float depth;
